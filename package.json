@@ -7,8 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "eslint src --fix && yarn format",
-    "lint:strict": "eslint --max-warnings=0 src",
     "tsc": "tsc --noEmit",
     "test:watch": "jest --watch",
     "test": "jest",
