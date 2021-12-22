@@ -8,7 +8,7 @@ const fileSchema = new Schema(
       type: String,
       required: true
     },
-    secure:{
+    secure_url:{
       type:String,
       required:true
     },
@@ -41,4 +41,7 @@ interface IFile extends Document{
   receiver?: string;
 }
 
-export default mongoose.model<IFile>("File", fileSchema)
+//export default mongoose.model<IFile>("File", fileSchema)
+
+const File = mongoose.models.File || mongoose.model<IFile>("File", fileSchema); 
+export default File;

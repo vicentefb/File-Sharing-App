@@ -5,7 +5,9 @@ module.exports = {
   },
 
   reactStrictMode: true,
-
+  env: {
+    API_BASE_ENDPOINT_CLIENT: process.env.API_BASE_ENDPOINT_CLIENT,
+  },
   // Uncoment to add domain whitelist
   // images: {
   //   domains: [

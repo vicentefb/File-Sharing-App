@@ -1,16 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import {UploadApiResponse, v2 as cloudinary} from 'cloudinary'
-import multer from 'multer';
+import formidable from 'formidable-serverless';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from "next-connect"
 
-import {connectDB} from "../config/db";
 import File from "../../models/File"
 
 
-const upload = multer();
-connectDB;
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_API_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -25,47 +23,39 @@ const apiRoute = nextConnect({
     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
   },
 });
-// We can use upload.array('myFile') to upload multiple files as well
-apiRoute.use(upload.single('myFile'));
 
 apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
-  const documentFile = (req as any).file;
-  try{
-    if(!documentFile){
-      return res.status(400).json({message: "A file is needed"});
+  const form = new formidable.IncomingForm();
+  form.keepExtensions = true;
+  form.parse(req, async (err: any, fields: any, files: { myFile: { path: string; name: any; }; }) => {
+    if (err) {
+      return res.status(400).json({ message: err });
     }
+
     let uploadedFile: UploadApiResponse;
     try{
-      uploadedFile = await cloudinary.uploader.upload(documentFile.path, {
+      uploadedFile = await cloudinary.uploader.upload(files.myFile.path, {
         folder: "file-sharing",
         resource_type: "auto"
       })
     } catch(error){
-      //console.log(error.message);
-      //console.log(process.env.CLOUDINARY_API_CLOUD_NAME)
       return res.status(500).json({message: "Cloudinary Error"})
     }
 
     // store file in mongo
-    const {originalname} = documentFile
+    const originalname = files.myFile.name;
     const {secure_url, bytes, format} = uploadedFile;
-
     const file = await File.create({
       filename: originalname,
       sizeInBytes: bytes,
-      secure_url,
-      format
+      secure_url: secure_url,
+      format: format,
     })
-    res.status(200).json({
+    return res.status(200).json({
       id: file._id,
       downloadPageLink: `${process.env.API_BASE_ENDPOINT_CLIENT}download/${file._id}`,
     });
-  }
-  catch(error){
-    
-    res.status(500).json({message: "Server Error"})
-  }
-
+  });
 });
 
 export default apiRoute;
