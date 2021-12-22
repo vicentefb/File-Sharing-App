@@ -15,51 +15,14 @@ import { connectDB } from './config/db';
 
 export default function HomePage({ isConnected }) {
   return (
-    <Layout>
-      {/* <Seo templateTitle='Home' /> */}
-      <Seo />
-
-      <main>
-        <section className='bg-white'>
-          <div className='flex flex-col items-center justify-center layout min-h-screen text-center'>
-            <h1>Next.js + Tailwind CSS + TypeScript Starter</h1>
-            <p className='mt-2 text-gray-800 text-sm'>
-              A starter for Next.js, Tailwind CSS, and TypeScript with Absolute
-              Import, Seo, Link component, pre-configured with Husky{' '}
-            </p>
-            <p className='mt-2 text-gray-700 text-sm'>
-              <ArrowLink href='https://github.com/theodorusclarence/ts-nextjs-tailwind-starter'>
-                See the repository
-              </ArrowLink>
-            </p>
-
-            <ButtonLink className='mt-6' href='/components' variant='light'>
-              See all components
-            </ButtonLink>
-
-            <UnstyledLink
-              href='https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftheodorusclarence%2Fts-nextjs-tailwind-starter'
-              className='mt-4'
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                width='92'
-                height='32'
-                src='https://vercel.com/button'
-                alt='Deploy with Vercel'
-              />
-            </UnstyledLink>
-
-            <footer className='absolute bottom-2 text-gray-700'>
-              © {new Date().getFullYear()} By{' '}
-              <CustomLink href='https://theodorusclarence.com?ref=tsnextstarter'>
-                Theodorus Clarence
-              </CustomLink>
-            </footer>
-          </div>
-        </section>
-      </main>
-    </Layout>
+    <div className='bg-gray-800 font-serif grid h-screen place-items-center text-white'>
+      <h1>Got a file? Share it here.</h1>
+      <div className='bg-gray-600 flex flex-col items-center justify-center rounded-xl shadow-xl w-96'>
+        {/*dropzone*/}
+        {/*render file*/}
+        {/* upload button*/}
+      </div>
+    </div>
   );
 }
 
