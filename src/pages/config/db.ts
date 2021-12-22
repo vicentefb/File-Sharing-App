@@ -14,5 +14,4 @@ export const connectDB = async () => {
         console.log("Connected to database.");
         return conn;
     }
-    
   }
